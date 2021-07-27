@@ -1,6 +1,7 @@
 import React from 'react';
 import {Row, Col, Button, Typography} from 'antd';
-import firebase, { auth, db } from '../../firebase/config';
+import firebase, { auth } from '../../firebase/config';
+import { addDocument, generateKeywords } from '../../firebase/services';
 
 const { Title } = Typography;
 
@@ -13,14 +14,14 @@ export default function Login(){
         
         
         if (additionalUserInfo?.isNewUser) {
-            db.collection('users').add({
+            addDocument('users', {
                 displayName: user.displayName,
                 email: user.email,
                 photoURL: user.photoURL,
                 uid: user.uid,
-                providerId: additionalUserInfo.providerId
-
-            })
+                providerId: additionalUserInfo.providerId,
+                keywords: generateKeywords(user.displayName)
+            });
         }
     };
 
