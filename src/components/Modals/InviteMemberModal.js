@@ -18,7 +18,7 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 300, ...props }) {
             setOptions([]);
             setFetching(true);
 
-            fetchOptions(value).then(newOptions => {
+            fetchOptions(value, props.curMembers).then(newOptions => {
                 setOptions(newOptions);
                 setFetching(false);
             })
@@ -51,7 +51,7 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 300, ...props }) {
 }
 
 
-async function fetchUserList(search) {
+async function fetchUserList(search, curMembers) {
     return db
         .collection('users')
         .where('keywords', 'array-contains', search)
@@ -63,7 +63,7 @@ async function fetchUserList(search) {
                 label: doc.data().displayName,
                 value: doc.data().uid,
                 photoURL: doc.data().photoURL
-            }))
+            })).filter(opt => !curMembers.includes(opt.value));
         });
 }
 
@@ -110,6 +110,7 @@ export default function InviteMemberModal() {
                         value={value}
                         placeholder="Nhập tên thành viên"
                         fetchOptions={fetchUserList}
+                        curMembers={selectedRoom.members}
                         onChange={newValue => setValue(newValue)}
                         style={{ width: '100%' }}
                     />
