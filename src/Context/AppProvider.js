@@ -49,6 +49,7 @@ export default function AppProvider({ children }) {
                 isInviteMemberVisible, 
                 setIsInviteMemberVisible,
                 selectedRoom, 
+                selectedRoomId,
                 setSelectedRoomId, 
                 members
             }}>

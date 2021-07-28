@@ -61,14 +61,14 @@ async function fetchUserList(search) {
         .then(snapshot => {
             return snapshot.docs.map(doc =>({
                 label: doc.data().displayName,
-                value: doc.data.uid,
-                photoURL: doc.data.photoURL
+                value: doc.data().uid,
+                photoURL: doc.data().photoURL
             }))
         });
 }
 
 export default function InviteMemberModal() {
-    const { isInviteMemberVisible, setIsInviteMemberVisible } = useContext(AppContext);
+    const { isInviteMemberVisible, setIsInviteMemberVisible, selectedRoomId, selectedRoom } = useContext(AppContext);
     const { user: { uid } } = useContext(AuthContext);
     const [value, setValue] = useState([]);
     const [form] = Form.useForm();
@@ -79,6 +79,13 @@ export default function InviteMemberModal() {
         //reset form value
         form.resetFields();
 
+
+        //update member 
+        const roomRef = db.collection('rooms').doc(selectedRoomId);
+
+        roomRef.update({
+            members: [...selectedRoom.members, ...value.map(val => val.value)]
+        });
         setIsInviteMemberVisible(false);
     }
 
