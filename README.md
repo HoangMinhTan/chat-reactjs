@@ -4,6 +4,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
+Run in localhost:
+
+### `($env:HTTPS = "true") -and (npm start)`
+
+Firestore emulator: 
+
+### `firebase emulators:start`
+
 In the project directory, you can run:
 
 ### `npm start`
