@@ -48,9 +48,8 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 300, ...props }) {
             }
         </Select>
     )
-}cd 
+}
 
-  
 
 async function fetchUserList(search, curMembers) {
     return db
@@ -80,7 +79,6 @@ export default function InviteMemberModal() {
         //reset form value
         form.resetFields();
 
-
         //update member 
         const roomRef = db.collection('rooms').doc(selectedRoomId);
 
@@ -88,11 +86,14 @@ export default function InviteMemberModal() {
             members: [...selectedRoom.members, ...value.map(val => val.value)]
         });
         setIsInviteMemberVisible(false);
+        setValue([]);
     }
 
     const handleCancel = () => {
-        form.resetFields();
+        form.resetFields(['fetchOptions']);
+
         setIsInviteMemberVisible(false);
+        setValue([]);
     }
 
     console.log({value});
@@ -104,7 +105,7 @@ export default function InviteMemberModal() {
                 onOk={handleOk}
                 onCancel={handleCancel}
             >
-                <Form form={form} layout='vertical'>
+                <Form form={form} layout='vertical' >
                     <DebounceSelect
                         mode="multiple"
                         label="Tên các thành viên"
